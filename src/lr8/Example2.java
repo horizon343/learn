@@ -1,0 +1,37 @@
+package lr8;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+
+public class Example2 {
+    public static void main(String[] args) {
+        try {
+            File inputFile = new File("src/lr8/example1.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            NodeList nList = doc.getElementsByTagName("book");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                System.out.println("\nТекущий элемент: " + nNode.getNodeName());
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    System.out.println("Название книги: " + eElement.getElementsByTagName("title").item(0).getTextContent());
+                    System.out.println("Автор: " + eElement.getElementsByTagName("author").item(0).getTextContent());
+                    System.out.println("Год издания: " + eElement.getElementsByTagName("year").item(0).getTextContent());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
